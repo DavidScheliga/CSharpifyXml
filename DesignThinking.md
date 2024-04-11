@@ -121,7 +121,12 @@ if the child is a primitive or a complex type.
 After the mapping and filtering phase, I just need a class descriptor, which is a simple class
 with a name and a list of fields. The user can then use this class to generate the C# class file.
 
-**class ClassDescriptor**
+**class XmlClassDescriptor**
++ bool: IsRoot
 + string: ClassName            
-+ List<ClassAttributeField>: FieldsFromAttributes
-+ List<ClassElementField>: FieldsFromElements
++ List<XmlClassField>: Fields
+
+**class XmlClassField**
++ bool: IsAttribute
++ string: FieldName
++ string: FieldType
