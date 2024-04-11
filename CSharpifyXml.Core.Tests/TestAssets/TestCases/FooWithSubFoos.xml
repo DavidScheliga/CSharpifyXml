@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Foo>
+    <Bar>Bar</Bar>
+    <SubFoos>
+        <SubFoo>
+            <Bar>SubBar</Bar>
+        </SubFoo>
+        <SubFoo>
+            <Bar>SubBar</Bar>
+        </SubFoo>
+    </SubFoos>
+</Foo>

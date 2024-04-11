@@ -1,0 +1,13 @@
+# IDEs
+.idea
+
+# Build results
+
+[Dd]ebug/
+[Rr]elease/
+x64/
+[Bb]in/
+[Oo]bj/
+
+riderModule.iml
+/_ReSharper.Caches/

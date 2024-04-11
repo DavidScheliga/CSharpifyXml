@@ -1,0 +1,15 @@
+﻿{
+  "Descriptors": {
+    "Foo": {
+      "ElementName": "Foo",
+      "Attributes": [],
+      "Children": [
+        {
+          "ElementName": "Bar",
+          "HasChildren": false,
+          "HasAttributes": false
+        }
+      ]
+    }
+  }
+}
