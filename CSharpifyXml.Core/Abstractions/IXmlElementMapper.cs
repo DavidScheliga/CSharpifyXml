@@ -2,5 +2,5 @@
 
 public interface IXmlElementMapper
 {
-    
+    XmlElementMap Map(StreamReader coupleXmlStream); 
 }

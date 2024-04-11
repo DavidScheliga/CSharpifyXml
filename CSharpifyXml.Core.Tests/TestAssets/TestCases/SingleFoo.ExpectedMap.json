@@ -1,6 +1,7 @@
 ﻿{
   "Descriptors": {
     "Foo": {
+      "IsRoot": true,
       "ElementName": "Foo",
       "Attributes": [],
       "Children": [

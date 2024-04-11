@@ -1,0 +1,29 @@
+﻿[
+  {
+    "IsRoot": true,
+    "ElementName": "Foo",
+    "AttributeNames": [],
+    "Fields": [
+      {
+        "FromAttribute": false,
+        "Name": "Bar",
+        "TypeName": "string"
+      },
+      {
+        "FromAttribute": false,
+        "Name": "SubFoos",
+        "TypeName": "SubFoo[]"
+      }
+    ]
+  },
+  {
+    "ElementName": "SubFoo",
+    "Fields": [
+      {
+        "FromAttribute": false,
+        "Name": "Bar",
+        "TypeName": "string" 
+      }
+    ]
+  }
+]

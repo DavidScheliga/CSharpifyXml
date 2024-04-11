@@ -8,6 +8,11 @@ namespace CSharpifyXml.Core;
 public class XmlElementDescriptor : IXmlElementDescriptor
 {
     /// <summary>
+    /// States if the element is the root element of the XML given.
+    /// </summary>
+    public bool IsRoot { get; set; }
+    
+    /// <summary>
     /// The name of the element.
     /// </summary>
     public string? ElementName { get; set; }
@@ -15,7 +20,8 @@ public class XmlElementDescriptor : IXmlElementDescriptor
     /// <summary>
     /// The attributes of the element.
     /// </summary>
-    public List<string>? AttributeNames { get; set; }
+    public List<XmlAttributeDescriptor>? Attributes { get; set; }
+    
     /// <summary>
     /// The child elements of the element.
     /// </summary>

@@ -1,0 +1,13 @@
+﻿[
+  {
+    "IsRoot": true,
+    "ElementName": "Foo",
+    "Fields": [
+      {
+        "FromAttribute": false,
+        "Name": "Bar",
+        "TypeName": "string"
+      }
+    ]
+  }
+]

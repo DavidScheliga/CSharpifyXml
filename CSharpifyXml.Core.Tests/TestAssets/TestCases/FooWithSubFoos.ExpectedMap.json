@@ -1,16 +1,19 @@
 ﻿{
   "Descriptors": {
     "Foo": {
+      "IsRoot": true,
       "ElementName": "Foo",
-      "AttributeNames": [],
+      "Attributes": [],
       "Children": [
         {
           "ElementName": "Bar",
+          "TypeName": "string",
           "HasChildren": false,
           "HasAttributes": false
         },
         {
           "ElementName": "SubFoos",
+          "TypeName": "unknown",
           "HasChildren": true,
           "HasAttributes": false
         }
@@ -18,7 +21,7 @@
     },
     "SubFoos": {
       "ElementName": "SubFoos",
-      "AttributeNames": [],
+      "Attributes": [],
       "Children": [
         {
           "ElementName": "SubFoo",
@@ -30,10 +33,11 @@
     },
     "SubFoo": {
       "ElementName": "SubFoo",
-      "AttributeNames": [],
+      "Attributes": [],
       "Children": [
         {
           "ElementName": "Bar",
+          "TypeName": "string",
           "HasChildren": false,
           "HasAttributes": false
         }
