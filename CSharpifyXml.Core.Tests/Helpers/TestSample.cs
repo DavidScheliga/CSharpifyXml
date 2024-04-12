@@ -29,4 +29,13 @@ public class TestSample(string xmlFilepath, object expectedResult, string testCa
     {
         return new StreamReader(XmlFilepath);
     }
+    
+    /// <summary>
+    /// Overriden to return a distinguishable name in the test runner theory list.
+    /// </summary>
+    /// <returns>The test case name is the best indicator.</returns>
+    public override string ToString()
+    {
+        return TestCaseName;
+    }
 }

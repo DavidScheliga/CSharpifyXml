@@ -19,7 +19,7 @@ public class XmlElementMap
         
         if (Descriptors.TryGetValue(descriptor.ElementName, out var existingDescriptor))
         {
-            existingDescriptor.Count++;
+            existingDescriptor.GroupCount++;
         }
         else
         {

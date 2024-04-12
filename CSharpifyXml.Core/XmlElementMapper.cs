@@ -11,16 +11,30 @@ public class XmlElementMapper : IXmlElementMapper
     private readonly ITypeIdentifier _typeIdentifier;
     private readonly Dictionary<XmlNodeHelper, XmlNodeHelper> _foundElements = new();
 
-    private sealed class XmlNodeHelper : XmlElementDescriptor
+    private sealed class XmlNodeHelper
     {
-        public XmlNodeHelper(string elementName, string parentPath)
+        public XmlNodeHelper(string elementName, string parentPath, int depth)
         {
             ParentPath = string.IsNullOrEmpty(parentPath) ? TheRootPath : parentPath;
             IsRoot = string.IsNullOrEmpty(parentPath);
             ElementName = elementName;
+            Depth = depth;
         }
 
-        public string ParentPath { get; set; }
+        public string TypeName { get; set; } = GlobalConstants.UnknownTypeName;
+
+        public bool IsRoot { get; }
+        public string ElementName { get; }
+
+        /// <summary>
+        /// The depth at which this element is located within the xml stucture.
+        /// </summary>
+        public int Depth { get; }
+
+        public string InnerText { get; set; } = string.Empty;
+
+        public string ParentPath { get; }
+
         public string ElementPath => Path.Join(ParentPath, ElementName);
 
         public override bool Equals(object? obj)
@@ -33,6 +47,20 @@ public class XmlElementMapper : IXmlElementMapper
         {
             return ElementPath.GetHashCode();
         }
+
+        public bool HasChildren => Children is { Count: > 0 };
+        public List<XmlNodeHelper> Children { get; set; } = [];
+        public List<XmlAttributeDescriptor> Attributes { get; set; } = [];
+
+        public void SetDataTypeByIdentifier(ITypeIdentifier identifier)
+        {
+            // Because we are only interested in the inner text of the leafs,
+            // we will not continue with the children.
+            var valueTypeName = identifier.IdentifyTypeRepresentation(InnerText);
+            TypeName = identifier.DetermineDominantDataType(valueTypeName, TypeName);
+        }
+        
+        public bool IsALeaf => Attributes.Count == 0 && Children.Count == 0;
     }
 
     public XmlElementMapper(ITypeIdentifier typeIdentifier)
@@ -55,53 +83,57 @@ public class XmlElementMapper : IXmlElementMapper
         {
             if (reader.NodeType != XmlNodeType.Element) continue;
 
-            var currentNode = new XmlNodeHelper(reader.Name, parentPath);
+            var currentNode = new XmlNodeHelper(reader.Name, parentPath, reader.Depth);
             RegisterNodeInFoundElements(currentNode);
             currentNode.Attributes = MapAttributesOfElement(reader).ToList();
 
-            var theElementHasContent = reader.IsEmptyElement;
-            var elementsInnerText = new StringBuilder();
-            // Handle attributes or other aspects if necessary
-            // for example, if you want to store attributes in Foo
-            if (!theElementHasContent)
-            {
-                var depthOfElement = reader.Depth;
-                while (reader.Read() && reader.Depth > depthOfElement)
-                {
-                    if (reader.NodeType == XmlNodeType.Element)
-                    {
-                        reader.MoveToElement();
-                        var childNode = ParseElement(reader, currentNode.ElementPath);
-                        if (childNode == null) continue;
-                        RegisterNodeInFoundElements(childNode);
-                        Debug.Assert(currentNode.Children != null, nameof(currentNode.Children) + " != null");
-                        currentNode.Children.Add(childNode);
-                    }
-                    else if (reader.NodeType == XmlNodeType.Text)
-                    {
-                        elementsInnerText.Append(reader.Value);
-                    }
-                    else if (reader.NodeType == XmlNodeType.EndElement)
-                    {
-                        break;
-                    }
-                }
-            }
+            ParseChildElements(reader, ref currentNode);
 
-            // If the current element has no children, it retains its InnerText.
-            // If it has children, clear the InnerText since it's a nested element.
-            Debug.Assert(currentNode.Children != null, nameof(currentNode.Children) + " != null");
-            if (currentNode.Children.Count != 0) return currentNode;
-
-            var valueTypeName = _typeIdentifier.IdentifyTypeRepresentation(elementsInnerText.ToString());
-            var dominantDataType =
-                _typeIdentifier.DetermineDominantDataType(valueTypeName, currentNode.TypeName);
-            currentNode.TypeName = dominantDataType;
-
+            currentNode.SetDataTypeByIdentifier(_typeIdentifier);
             return currentNode;
         }
 
         return null; // In case the XML is empty or has no elements
+    }
+
+    /// <summary>
+    /// Parses the child elements further down of the current element.
+    /// </summary>
+    /// <param name="reader"></param>
+    /// <param name="parentElement"></param>
+    private void ParseChildElements(XmlReader reader, ref XmlNodeHelper parentElement)
+    {
+        var theElementHasContent = reader.IsEmptyElement;
+        if (theElementHasContent) return;
+
+        var textOfParent = new StringBuilder();
+        // Because we need to distinguish whether we are getting deeper in the structure
+        // while reading the next elements, this is checked by the depth of the reader.
+        while (reader.Read() && reader.Depth > parentElement.Depth)
+        {
+            // We are a level deeper as before.
+            if (reader.NodeType == XmlNodeType.Element)
+            {
+                reader.MoveToElement();
+                var childNode = ParseElement(reader, parentElement.ElementPath);
+                if (childNode == null) continue;
+                RegisterNodeInFoundElements(childNode);
+                Debug.Assert(parentElement.Children != null, nameof(parentElement.Children) + " != null");
+                parentElement.Children.Add(childNode);
+            }
+            else if (reader.NodeType == XmlNodeType.Text)
+            {
+                textOfParent.Append(reader.Value);
+            }
+            else if (reader.NodeType == XmlNodeType.EndElement)
+            {
+                break;
+            }
+        }
+
+        var thisIsNotALeafSoWeDoNotSetTheInnerText = parentElement.HasChildren;
+        if (thisIsNotALeafSoWeDoNotSetTheInnerText) return;
+        parentElement.InnerText = textOfParent.ToString();
     }
 
     /// <summary>
@@ -123,12 +155,87 @@ public class XmlElementMapper : IXmlElementMapper
     private XmlElementMap CreateRawElementMap()
     {
         var elementMap = new XmlElementMap();
-        foreach (var element in _foundElements.Values)
+        var transformedElements = _foundElements
+            .Values
+            .Where(x => !x.IsALeaf)
+            .Select(TransformHelperToDescriptor);
+        foreach (var transformedElement in transformedElements)
         {
-            elementMap.AddDescriptor(element);
+            elementMap.AddDescriptor(transformedElement);
         }
 
         return elementMap;
+    }
+
+    private XmlElementDescriptor TransformHelperToDescriptor(XmlNodeHelper helper)
+    {
+        var children = MergeChildrenByElementName(helper.Children).ToList();
+        var attributes = MergeAttributesByName(helper.Attributes).ToList();
+
+        var descriptor = new XmlElementDescriptor
+        {
+            ElementName = helper.ElementName,
+            TypeName = helper.TypeName,
+            GroupCount = helper.Children.Count,
+            IsRoot = helper.IsRoot,
+            Attributes = attributes,
+            Children = children
+        };
+        return descriptor;
+    }
+
+    private static string DetermineFinalDataType(XmlNodeHelper element)
+    {
+        // Because non leaf elements, which has children define classes
+        // their data type name representation will be their element name.
+        var elementWillBeAClass = element.Children is { Count: > 0 };
+        Debug.Assert(element.ElementName != null, nameof(element.ElementName) + " != null");
+        Debug.Assert(element.TypeName != null, nameof(element.TypeName) + " != null");
+        return elementWillBeAClass ? element.ElementName : element.TypeName;
+    }
+
+    private IEnumerable<XmlChildDescriptor> MergeChildrenByElementName(IEnumerable<XmlNodeHelper> children)
+    {
+        var childrenGrouped = children.GroupBy(child => child.ElementName);
+        foreach (var group in childrenGrouped)
+        {
+            var dataTypeNames = group.Select(DetermineFinalDataType);
+            var dominantTypeName = _typeIdentifier.DetermineDominantDataType(dataTypeNames.ToArray());
+            var firstElement = group.First();
+            Debug.Assert(firstElement.ElementName != null, "Element name must be defined.");
+
+            var mergedElement = new XmlChildDescriptor
+            {
+                GroupCount = group.Count(),
+                TypeName = dominantTypeName,
+                ElementName = firstElement.ElementName,
+                HadAttributes = group.SelectMany(x => x.Attributes).Any(),
+                HadChildren = group.SelectMany(x => x.Children).Any()
+            };
+            yield return mergedElement;
+        }
+    }
+
+    /// <summary>
+    /// This function merges all attributes of the given children.
+    /// </summary>
+    /// <param name="attributes">The children of a group.</param>
+    /// <returns>The unique remaining attributes.</returns>
+    private IEnumerable<XmlAttributeDescriptor> MergeAttributesByName(IEnumerable<XmlAttributeDescriptor> attributes)
+    {
+        var attributesGrouped = attributes.GroupBy(attr => attr.Name);
+        foreach (var group in attributesGrouped)
+        {
+            var dataTypeNames = group.Select(attr => attr.TypeName).ToArray();
+            Debug.Assert(dataTypeNames.All(x => x != null), "All data type names must be defined.");
+            var dominantTypeName = _typeIdentifier.DetermineDominantDataType(dataTypeNames!);
+            var firstAttribute = group.First();
+            yield return new XmlAttributeDescriptor
+            {
+                Name = firstAttribute.Name,
+                TypeName = dominantTypeName
+            };
+        }
     }
 
     /// <summary>

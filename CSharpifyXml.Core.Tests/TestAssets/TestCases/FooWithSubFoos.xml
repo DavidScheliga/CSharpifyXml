@@ -3,10 +3,10 @@
     <Bar>Bar</Bar>
     <SubFoos>
         <SubFoo>
-            <Bar>SubBar</Bar>
+            <Bar>SubBar1</Bar>
         </SubFoo>
         <SubFoo>
-            <Bar>SubBar</Bar>
+            <Bar>SubBar2</Bar>
         </SubFoo>
     </SubFoos>
 </Foo>

@@ -15,10 +15,10 @@ public interface IXmlElementDescriptor
     /// <summary>
     /// The attributes of the element.
     /// </summary>
-    List<XmlAttributeDescriptor>? Attributes { get; set; }
+    List<XmlAttributeDescriptor> Attributes { get; set; }
 
     /// <summary>
     /// The child elements of the element.
     /// </summary>
-    List<XmlElementDescriptor>? Children { get; set; }
+    List<XmlChildDescriptor> Children { get; set; }
 }
