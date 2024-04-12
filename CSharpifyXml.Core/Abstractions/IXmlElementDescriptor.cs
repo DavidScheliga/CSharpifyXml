@@ -20,5 +20,5 @@ public interface IXmlElementDescriptor
     /// <summary>
     /// The child elements of the element.
     /// </summary>
-    List<XmlChildElementDescriptor>? Children { get; set; }
+    List<XmlElementDescriptor>? Children { get; set; }
 }

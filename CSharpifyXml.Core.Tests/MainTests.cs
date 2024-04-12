@@ -1,4 +1,3 @@
-using System.Security.Authentication.ExtendedProtection;
 using CSharpifyXml.Core.Abstractions;
 using CSharpifyXml.Core.Tests.Helpers;
 using FluentAssertions;
@@ -32,8 +31,7 @@ public class MainTests
     )
     {
         // The XmlMappingSettings is the place to define the configuration of the mapping.
-        services.AddSingleton<IMappingSetting, MappingSetting>(
-            (x) => mappingSetting ?? MappingSetting.Default);
+        services.AddSingleton<IMappingSetting, MappingSetting>(_ => mappingSetting ?? MappingSetting.Default);
         services.AddTransient<ITypeIdentifier, TypeIdentifier>();
         services.AddTransient<IXmlElementMapper, XmlElementMapper>();
         services.AddTransient<IXmlClassIdentifier, XmlClassIdentifier>();
