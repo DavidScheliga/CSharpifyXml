@@ -3,7 +3,9 @@
 Duration: 1.5h
 Tools: Rider, GitHub Copilot
 
-This section describes the design thinking behind the tool.
+This section describes the design thinking behind the tool, at the beginning.
+The final implementation of the prototype will most likely deviate from this 
+first draft here.
 
 ## Empathize
 
@@ -12,7 +14,7 @@ This section describes the design thinking behind the tool.
 - I wanted more control over the generated class names and name mappings.
 - XSD.exe does not work with complex XML files.
 - XSD.exe if perfect for handling serialization and deserialization.
-  But it is not perfect for generating human readable C# classes,
+  But it is not perfect for generating human-readable C# classes,
   in which information transfer to the human is my main goal.
 - XSD.exe does not give me the ability to define the resulting c# file structure.
 - XSD.exe is overkill for my purpose.
@@ -25,17 +27,18 @@ This section describes the design thinking behind the tool.
 - I do not really intend to serialize the data back to XML. Deserialization is the main goal.
 - Main work path is: Deserialize XML -> Transform data -> Process data -> Store resulting data.
 
-### What do i want?
+### What do I want?
 
 - I want to be able to generate C# class files from XML files having the ability to define the resulting C# class
   structure especially the class naming.
 - What I want is to get a quick overview of elements, their attributes and their direct children.
 - I want to be able to define a template, by which the c# class files are generated.
+- I want to use the XmlReader for exploration and training purposes.
 
 ## Define
 
 I want to give the user a simple tool to generate C# classes from XML files for deserialization purposes, which
-main goal is to achieve a human readable C# class structure.
+main goal is to achieve a human-readable C# class structure.
 
 ## Prototype
 
@@ -55,7 +58,7 @@ This is the sole section of the library
     - Remove all attributes, which are set to be ignored.
     - Drop if the element descriptor has no children and attributes, because they are primitives.
 - Processing phase (Associated classes: XmlElementProcessor)
-    - Tranform the remaining element descriptors to class descriptors.
+    - Transform the remaining element descriptors to class descriptors.
     - Generate the C# class file content using T4 templates, by using the class descriptors.
 
 Seam 2: Final output
@@ -102,15 +105,16 @@ from being badly designed (garbage in, garbage out).**
 + List<string>: AttributeNames
 + List<XmlChildDescriptor>: Children
 
-For a class file i need to know the element
+For a class file I need to know the element
 Has the element name, its attributes and its first level children.
 
 
 **class XmlChildDescriptor**
 + string: ElementName
-+ int: Count
-+ bool: HasChildren
-+ bool: HasAttributes
++ string: TypeName
++ int: GroupCount
+~+ bool: HasChildren~
+~+ bool: HasAttributes~
 
 The count states the number of this child within the parent element, to be able to directly
 use a collection for this property. The HasChildren and HasAttributes are used to determine

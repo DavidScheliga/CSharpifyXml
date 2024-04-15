@@ -1,16 +1,13 @@
-﻿{
-  "Descriptors": {
-    "Foo": {
-      "IsRoot": true,
-      "ElementName": "Foo",
-      "Attributes": [],
-      "Children": [
-        {
-          "ElementName": "Bar",
-          "HasChildren": false,
-          "HasAttributes": false
-        }
-      ]
-    }
+﻿[
+  {
+    "IsRoot": true,
+    "ElementName": "Foo",
+    "Attributes": [],
+    "Children": [
+      {
+        "ElementName": "Bar",
+        "TypeName": "string"
+      }
+    ]
   }
-}
+]

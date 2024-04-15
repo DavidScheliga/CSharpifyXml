@@ -1,4 +1,6 @@
-﻿namespace CSharpifyXml.Core.Abstractions;
+﻿using CSharpifyXml.Core.Mapping;
+
+namespace CSharpifyXml.Core.Abstractions;
 
 /// <summary>
 /// The class identifier is responsible for identifying the classes within the content

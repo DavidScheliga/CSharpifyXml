@@ -1,16 +1,13 @@
-﻿namespace CSharpifyXml.Core.Abstractions;
+﻿using CSharpifyXml.Core.Mapping;
 
-public interface IXmlElementDescriptor
+namespace CSharpifyXml.Core.Abstractions;
+
+public interface IXmlElementDescriptor : IXmlLightElementDescriptor
 {
     /// <summary>
     /// States if the element is the root element of the XML given.
     /// </summary>
     bool IsRoot { get; set; }
-    
-    /// <summary>
-    /// The name of the element.
-    /// </summary>
-    string? ElementName { get; set; }
 
     /// <summary>
     /// The attributes of the element.
@@ -20,5 +17,5 @@ public interface IXmlElementDescriptor
     /// <summary>
     /// The child elements of the element.
     /// </summary>
-    List<XmlChildDescriptor> Children { get; set; }
+    List<XmlLightElementDescriptor> Children { get; set; }
 }

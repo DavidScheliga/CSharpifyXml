@@ -1,4 +1,6 @@
-﻿namespace CSharpifyXml.Core.Tests.Helpers;
+﻿using CSharpifyXml.Core.Mapping;
+
+namespace CSharpifyXml.Core.Tests.Helpers;
 
 /// <summary>
 /// A sample for testing the mapping of a XML file to a <see cref="XmlElementMap"/>.
@@ -19,11 +21,6 @@ public class TestSample(string xmlFilepath, object expectedResult, string testCa
     /// The expected map of the XML file.
     /// </summary>
     public object ExpectedResult { get; } = expectedResult;
-    
-    public T GetExpectedResult<T>()
-    {
-        return (T)ExpectedResult;
-    }
 
     public StreamReader OpenXmlStream()
     {

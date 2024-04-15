@@ -1,4 +1,6 @@
-﻿namespace CSharpifyXml.Core.Tests.Helpers;
+﻿using CSharpifyXml.Core.Mapping;
+
+namespace CSharpifyXml.Core.Tests.Helpers;
 
 /// <summary>
 /// A sample for testing the mapping of a XML file to a <see cref="XmlElementMap"/>.

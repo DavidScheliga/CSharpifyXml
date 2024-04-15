@@ -1,4 +1,5 @@
 using CSharpifyXml.Core.Abstractions;
+using CSharpifyXml.Core.Mapping;
 using CSharpifyXml.Core.Tests.Helpers;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +36,7 @@ public class MainTests
         services.AddTransient<ITypeIdentifier, TypeIdentifier>();
         services.AddTransient<IXmlElementMapper, XmlElementMapper>();
         services.AddTransient<IXmlClassIdentifier, XmlClassIdentifier>();
+        services.AddTransient<ISequenceFormatter, SequenceFormatter>();
     }
 
     /// <summary>
@@ -76,16 +78,17 @@ public class MainTests
         var elementMapperSut = sutProvider.GetRequiredService<IXmlElementMapper>();
         
         // Act
-        XmlElementMap result;
+        XmlElementMap elementMap;
         using (var sampleStream = sample.OpenXmlStream())
         {
-            result = elementMapperSut.Map(sampleStream);
+            elementMap = elementMapperSut.Map(sampleStream);
         }
 
         // Assert
-        result.Should().NotBeNull(because: "The sample steam should contain a valid XML file. Check the test case.");
-        var expectedMap = (XmlElementMap)sample.ExpectedResult;
-        expectedMap.Should().NotBeNull();
-        result.Should().BeEquivalentTo(expectedMap);
+        elementMap.Should().NotBeNull(because: "The sample steam should contain a valid XML file. Check the test case.");
+        var descriptors = elementMap.Descriptors.Values.ToList();
+        var expectedMap = (List<XmlElementDescriptor>)sample.ExpectedResult;
+        descriptors.Should().NotBeNull();
+        descriptors.Should().BeEquivalentTo(expectedMap);
     }
 }

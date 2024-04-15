@@ -33,16 +33,10 @@
       <None Update="TestAssets\TestCases\SingleFoo.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="TestAssets\TestCases\FooWithSubFoos.Expected.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
       <None Update="TestAssets\TestCases\FooWithSubFoos.ExpectedClasses.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="TestAssets\TestCases\FooWithSubFoos.ExpectedMap.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="TestAssets\TestCases\SingleFoo.Expected.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="TestAssets\TestCases\SingleFoo.ExpectedClasses.json">

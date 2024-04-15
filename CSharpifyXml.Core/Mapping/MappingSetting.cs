@@ -1,6 +1,6 @@
 ﻿using CSharpifyXml.Core.Abstractions;
 
-namespace CSharpifyXml.Core;
+namespace CSharpifyXml.Core.Mapping;
 
 public class MappingSetting : IMappingSetting
 {

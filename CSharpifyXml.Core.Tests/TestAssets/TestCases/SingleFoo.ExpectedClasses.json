@@ -2,9 +2,8 @@
   {
     "IsRoot": true,
     "ElementName": "Foo",
-    "Fields": [
+    "FromElements": [
       {
-        "FromAttribute": false,
         "Name": "Bar",
         "TypeName": "string"
       }

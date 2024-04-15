@@ -1,47 +1,37 @@
-﻿{
-  "Descriptors": {
-    "Foo": {
-      "IsRoot": true,
-      "ElementName": "Foo",
-      "Attributes": [],
-      "Children": [
-        {
-          "ElementName": "Bar",
-          "TypeName": "string",
-          "HasChildren": false,
-          "HasAttributes": false
-        },
-        {
-          "ElementName": "SubFoos",
-          "TypeName": "unknown",
-          "HasChildren": true,
-          "HasAttributes": false
-        }
-      ]
-    },
-    "SubFoos": {
-      "ElementName": "SubFoos",
-      "Attributes": [],
-      "Children": [
-        {
-          "ElementName": "SubFoo",
-          "Count": "2",
-          "HasChildren": false,
-          "HasAttributes": false
-        }
-      ]
-    },
-    "SubFoo": {
-      "ElementName": "SubFoo",
-      "Attributes": [],
-      "Children": [
-        {
-          "ElementName": "Bar",
-          "TypeName": "string",
-          "HasChildren": false,
-          "HasAttributes": false
-        }
-      ]
-    }
+﻿[
+  {
+    "IsRoot": true,
+    "ElementName": "Foo",
+    "Attributes": [],
+    "Children": [
+      {
+        "ElementName": "Bar",
+        "TypeName": "string"
+      },
+      {
+        "ElementName": "SubFoos"
+      }
+    ]
+  },
+  {
+    "ElementName": "SubFoos",
+    "Attributes": [],
+    "Children": [
+      {
+        "ElementName": "SubFoo",
+        "GroupCount": "2"
+      }
+    ]
+  },
+  {
+    "ElementName": "SubFoo",
+    "GroupCount": "2",
+    "Attributes": [],
+    "Children": [
+      {
+        "ElementName": "Bar",
+        "TypeName": "string"
+      }
+    ]
   }
-}
+]

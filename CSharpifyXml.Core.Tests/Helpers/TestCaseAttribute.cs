@@ -1,9 +1,24 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
+using CSharpifyXml.Core.Mapping;
 using Newtonsoft.Json;
 using Xunit.Sdk;
 
 namespace CSharpifyXml.Core.Tests.Helpers;
+
+/// <summary>
+/// Provides the main tests.
+/// </summary>
+/// <param name="testCasesFolderPath"></param>
+public class MainTestCaseAttribute(string testCasesFolderPath) 
+    : TestCaseAttribute<List<XmlClassDescriptor>>(testCasesFolderPath, ".ExpectedClasses.json");
+
+/// <summary>
+/// Provides the first step's result.
+/// </summary>
+/// <param name="testCasesFolderPath"></param>
+public class MappingTestCaseAttribute(string testCasesFolderPath) 
+    : TestCaseAttribute<List<XmlElementDescriptor>>(testCasesFolderPath, ".ExpectedMap.json");
 
 /// <summary>
 /// Loads test cases from a local folder.
@@ -11,13 +26,12 @@ namespace CSharpifyXml.Core.Tests.Helpers;
 /// </summary>
 public abstract class TestCaseAttribute<T>(string testCasesFolderPath, string resultFileExtension) : DataAttribute
 {
-    protected const string TestFileExtension = ".xml";
+    private const string TestFileExtension = ".xml";
 
     /// <summary>
     /// Returns the test cases for the test method, by finding all test file xml files in
     /// the test cases folder and their corresponding expected json files. 
     /// </summary>
-    /// <param name="testMethod"></param>
     /// <returns>The test cases as <see cref="TestSample"/></returns>
     /// <exception cref="NotImplementedException"></exception>
     private IEnumerable<TestSample> GetTestCases()
@@ -31,7 +45,7 @@ public abstract class TestCaseAttribute<T>(string testCasesFolderPath, string re
             (
                 testCaseName:Path.GetFileNameWithoutExtension(testFile),
                 xmlFilepath:testFile,
-                expectedResult:expectedMap
+                expectedResult:expectedMap!
             );
         }
     }
@@ -43,10 +57,10 @@ public abstract class TestCaseAttribute<T>(string testCasesFolderPath, string re
         return testFiles;
     }
 
-    private T GetExpectedResult<T>(string testFile)
+    private TM GetExpectedResult<TM>(string testFile)
     {
         var expectedFile = testFile.Replace(TestFileExtension, resultFileExtension);
-        var expectedMap = JsonConvert.DeserializeObject<T>(File.ReadAllText(expectedFile));
+        var expectedMap = JsonConvert.DeserializeObject<TM>(File.ReadAllText(expectedFile));
         Debug.Assert(expectedMap != null, nameof(expectedMap) + " != null");
         return expectedMap;
     }

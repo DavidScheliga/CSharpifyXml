@@ -2,15 +2,12 @@
   {
     "IsRoot": true,
     "ElementName": "Foo",
-    "AttributeNames": [],
-    "Fields": [
+    "FromElements": [
       {
-        "FromAttribute": false,
         "Name": "Bar",
         "TypeName": "string"
       },
       {
-        "FromAttribute": false,
         "Name": "SubFoos",
         "TypeName": "SubFoo[]"
       }
@@ -18,9 +15,8 @@
   },
   {
     "ElementName": "SubFoo",
-    "Fields": [
+    "FromElements": [
       {
-        "FromAttribute": false,
         "Name": "Bar",
         "TypeName": "string" 
       }
