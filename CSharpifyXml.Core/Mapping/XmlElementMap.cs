@@ -124,11 +124,13 @@ public class XmlElementMap(ITypeIdentifier typeIdentifier)
             var attribute = group.First();
             if (group.Count() == 1)
             {
+                Debug.Assert(attribute.ElementName != null, "Element name is null");
                 yield return new XmlAttributeDescriptor(attribute.ElementName, attribute.TypeName);
                 continue;
             }
 
             var dominantTypeName = typeIdentifier.DetermineDominantDataType(group.Select(x => x.TypeName).ToArray());
+            Debug.Assert(attribute.ElementName != null, "Element name is null");
             yield return new XmlAttributeDescriptor(attribute.ElementName, dominantTypeName);
         }
     }

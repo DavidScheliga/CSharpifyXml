@@ -12,33 +12,8 @@ namespace CSharpifyXml.Core.Tests;
 /// can be used to deserialize the XML. Serialization of the XML is not the goal of this package, as for this
 /// the .NET xsd.exe of Microsoft is the choice to take.
 /// </summary>
-public class MainTests
+public class MainTests : ATestClass
 {
-    /// <summary>
-    /// Creates a service provider for the tests.
-    /// </summary>
-    /// <param name="mappingSetting">The mapping settings which will be used.</param>
-    /// <returns></returns>
-    private ServiceProvider CreateTestServiceProvider(MappingSetting? mappingSetting = null)
-    {
-        var services = new ServiceCollection();
-        ConfigureServices(services, mappingSetting);
-        return services.BuildServiceProvider();
-    }
-
-    private static void ConfigureServices(
-        IServiceCollection services,
-        MappingSetting? mappingSetting = null
-    )
-    {
-        // The XmlMappingSettings is the place to define the configuration of the mapping.
-        services.AddSingleton<IMappingSetting, MappingSetting>(_ => mappingSetting ?? MappingSetting.Default);
-        services.AddTransient<ITypeIdentifier, TypeIdentifier>();
-        services.AddTransient<IXmlElementMapper, XmlElementMapper>();
-        services.AddTransient<IXmlClassIdentifier, XmlClassIdentifier>();
-        services.AddTransient<ISequenceFormatter, SequenceFormatter>();
-    }
-
     /// <summary>
     /// This test represents the main usage case of the <see cref="CSharpifyXml.Core"/> package.
     /// </summary>

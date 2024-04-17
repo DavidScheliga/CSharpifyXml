@@ -1,6 +1,4 @@
-﻿using CSharpifyXml.Core.Mapping;
-
-namespace CSharpifyXml.Core;
+﻿namespace CSharpifyXml.Core;
 
 public class XmlPropertyDescriptor
 {

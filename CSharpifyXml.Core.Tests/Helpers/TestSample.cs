@@ -15,7 +15,7 @@ public class TestSample(string xmlFilepath, object expectedResult, string testCa
     /// <summary>
     /// The name of the file stem.
     /// </summary>
-    public string TestCaseName { get; set; } = testCaseName;
+    private string TestCaseName { get; } = testCaseName;
 
     /// <summary>
     /// The expected map of the XML file.

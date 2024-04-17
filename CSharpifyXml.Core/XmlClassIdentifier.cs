@@ -31,7 +31,7 @@ public class XmlClassIdentifier(IXmlElementMapper mapper, ISequenceFormatter seq
         var allChildrenWithParentKey = mapDescriptors
             .Where(kv => ThisIsASequence(kv.Value));
 
-        foreach (var (parentKey, potentialSequence) in allChildrenWithParentKey)
+        foreach (var (_, potentialSequence) in allChildrenWithParentKey)
         {
             if (potentialSequence.TypeName != GlobalConstants.UnknownTypeName) continue;
             

@@ -14,7 +14,7 @@ public class TypeIdentifier : ITypeIdentifier
 
     private readonly Dictionary<string, int> _primitiveTypeRanking = new()
     {
-        // 0 is reserved for any name other than UNKWOWN and listed below.
+        // 0 is reserved for any name other than 'unknown' and listed below.
         { "string", 1 }, // String always wins
         { "double", 2 }, // Double is more specific than int
         { "int", 3 }, // Int is more specific than unknown

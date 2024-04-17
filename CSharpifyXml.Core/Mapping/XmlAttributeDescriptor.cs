@@ -1,5 +1,4 @@
-﻿using System.Data;
-using CSharpifyXml.Core.Abstractions;
+﻿using CSharpifyXml.Core.Abstractions;
 
 namespace CSharpifyXml.Core.Mapping;
 
