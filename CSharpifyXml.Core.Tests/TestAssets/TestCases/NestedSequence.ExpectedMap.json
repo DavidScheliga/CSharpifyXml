@@ -1,0 +1,23 @@
+﻿[
+  {
+    "IsRoot": true,
+    "ElementName": "Table",
+    "Children": [
+      {
+        "ElementName": "Rows",
+        "GroupCount": 2
+      }
+    ]
+  },
+  {
+    "ElementName": "Rows",
+    "GroupCount": 2,
+    "Children": [
+      {
+        "ElementName": "Row",
+        "TypeName": "string",
+        "GroupCount": 3
+      }
+    ]
+  }
+]

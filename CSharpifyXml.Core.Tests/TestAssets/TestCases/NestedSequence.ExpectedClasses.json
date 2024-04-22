@@ -1,0 +1,21 @@
+﻿[
+  {
+    "IsRoot": true,
+    "ElementName": "Table",
+    "FromElements": [
+      {
+        "ElementName": "Rows",
+        "TypeName" : "Rows[]"
+      }
+    ]
+  },
+  {
+    "ElementName": "Rows",
+    "Children": [
+      {
+        "ElementName": "Row",
+        "TypeName" : "object[]"
+      }
+    ]
+  }
+]
