@@ -1,0 +1,29 @@
+﻿[
+  {
+    "IsRoot": true,
+    "ElementName": "Foo",
+    "FromElements": [
+      {
+        "Name": "Bar",
+        "TypeName": "object"
+      },
+      {
+        "Name": "SubFoo",
+        "TypeName": "SubFoo"
+      },
+      {
+        "Name": "AfterSubFoo",
+        "TypeName": "string"
+      }
+    ]
+  },
+  {
+    "ElementName": "SubFoo",
+    "FromElements": [
+      {
+        "Name": "Baz",
+        "TypeName": "object" 
+      }
+    ]
+  }
+]

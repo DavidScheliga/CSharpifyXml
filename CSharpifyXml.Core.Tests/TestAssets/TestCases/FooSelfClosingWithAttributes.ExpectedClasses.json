@@ -1,0 +1,21 @@
+﻿[
+  {
+    "IsRoot": true,
+    "ElementName": "Foo",
+    "FromElements": [
+      {
+        "Name": "ManyBars",
+        "TypeName": "Bar[]"
+      }
+    ]
+  },
+  {
+    "ElementName": "Bar",
+    "FromAttributes": [
+      {
+        "Name": "baz",
+        "TypeName": "int" 
+      }
+    ]
+  }
+]

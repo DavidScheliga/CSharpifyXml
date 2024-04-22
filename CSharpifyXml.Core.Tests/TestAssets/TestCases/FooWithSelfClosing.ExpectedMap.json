@@ -1,0 +1,28 @@
+﻿[
+  {
+    "IsRoot": true,
+    "ElementName": "Foo",
+    "Attributes": [],
+    "Children": [
+      {
+        "ElementName": "Bar"
+      },
+      {
+        "ElementName": "SubFoo"
+      },
+      {
+        "ElementName": "AfterSubFoo",
+        "TypeName": "string"
+      }
+    ]
+  },
+  {
+    "ElementName": "SubFoo",
+    "Attributes": [],
+    "Children": [
+      {
+        "ElementName": "Baz"
+      }
+    ]
+  }
+]

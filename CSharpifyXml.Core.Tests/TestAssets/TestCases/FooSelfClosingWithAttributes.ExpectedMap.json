@@ -1,0 +1,30 @@
+﻿[
+  {
+    "IsRoot": true,
+    "ElementName": "Foo",
+    "Children": [
+      {
+        "ElementName": "ManyBars"
+      }
+    ]
+  },
+  {
+    "ElementName": "ManyBars",
+    "Children": [
+      {
+        "ElementName": "Bar",
+        "GroupCount": 3
+      }
+    ]
+  },
+  {
+    "ElementName": "Bar",
+    "GroupCount": 3,
+    "Attributes": [
+      {
+        "ElementName": "baz",
+        "TypeName": "int"
+      }
+    ]
+  }
+]

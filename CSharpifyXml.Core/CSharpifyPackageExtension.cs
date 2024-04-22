@@ -8,10 +8,10 @@ public static class CSharpifyPackageExtension
 {
     public static void ConfigureCSharpifyServices(this IServiceCollection services)
     {
+        services.AddTransient<ISequenceFormatter, SequenceFormatter>();
+        services.AddTransient<ITypeIdentifier, TypeIdentifier>();
+        services.AddTransient<IXmlElementMap, XmlElementMap>();
         services.AddTransient<IXmlElementMapper, XmlElementMapper>();
         services.AddTransient<IXmlClassIdentifier, XmlClassIdentifier>();
-        services.AddTransient<ITypeIdentifier, TypeIdentifier>();
-        services.AddTransient<IXmlClassIdentifier, XmlClassIdentifier>();
-        services.AddTransient<ISequenceFormatter, SequenceFormatter>();
     }
 }

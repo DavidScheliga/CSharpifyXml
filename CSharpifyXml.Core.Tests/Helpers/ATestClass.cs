@@ -11,6 +11,7 @@ public abstract class ATestClass
     protected static ServiceProvider CreateTestServiceProvider()
     {
         var services = new ServiceCollection();
+        services.AddSingleton<IMappingConfiguration, TestConfig>();
         services.ConfigureCSharpifyServices();
         return services.BuildServiceProvider();
     }

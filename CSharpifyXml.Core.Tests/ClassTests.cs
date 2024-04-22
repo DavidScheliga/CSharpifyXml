@@ -1,4 +1,5 @@
 ﻿using CSharpifyXml.Core.Mapping;
+using CSharpifyXml.Core.Tests.Helpers;
 using FluentAssertions;
 
 namespace CSharpifyXml.Core.Tests;
@@ -15,5 +16,21 @@ public class ClassTests
 
         // Assert
         hashSet.Contains(keyWithSameParent).Should().BeTrue();
+    }
+    
+    
+    [Theory]
+    [InlineData("{{typeName}}[]","Foo", "Foo[]")]
+    [InlineData(" {{ typename }} ", "Foo", " Foo ")]
+    [InlineData("List<{{ TYPENAME }}>", "Foo", "List<Foo>")]
+    public void FormatSequenceWorksProperly(string template, string sampleInput, string expectedRepresentation)
+    {
+        // Arrange
+        var sut = new SequenceFormatter(new TestConfig() { SequenceTemplate = template});
+        // Act
+        var resultingSequenceRepresentation = sut.FormatSequence(sampleInput);
+
+        // Assert
+        resultingSequenceRepresentation.Should().Be(expectedRepresentation);
     }
 }

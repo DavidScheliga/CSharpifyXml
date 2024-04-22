@@ -7,7 +7,7 @@ namespace CSharpifyXml.Core.Mapping;
 /// A map of element names to their descriptors. On creation the map is under construction
 /// and <see cref="XmlElementMap.Finish"/> must be called before accessing its items.
 /// </summary>
-public class XmlElementMap(ITypeIdentifier typeIdentifier)
+public class XmlElementMap(ITypeIdentifier typeIdentifier) : IXmlElementMap
 {
     private bool _underConstruction = true;
 
@@ -100,6 +100,12 @@ public class XmlElementMap(ITypeIdentifier typeIdentifier)
 
     public void OnAttributesFound(RelationKey keyOfAttributeHolder, IEnumerable<XmlAttributeDescriptor> attributes)
     {
+        var thereAreNoAttibutesToConsider = !attributes.Any();
+        if (thereAreNoAttibutesToConsider)
+        {
+            return;
+        }
+
         if (TryGetDescriptor(keyOfAttributeHolder, out var descriptor))
         {
             descriptor!.Attributes = MergeAttributes(descriptor.Attributes, attributes).ToList();

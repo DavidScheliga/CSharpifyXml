@@ -12,7 +12,7 @@ public class XmlElementDescriptor : XmlLightElementDescriptor, IXmlElementDescri
     /// </summary>
     public bool IsRoot { get; set; }
 
-    public bool IsLeaf => Children.Count == 0;
+    public bool IsLeaf => Children.Count == 0 && Attributes.Count == 0;
 
     /// <summary>
     /// The attributes of the element.

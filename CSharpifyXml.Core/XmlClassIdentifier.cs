@@ -18,13 +18,62 @@ public class XmlClassIdentifier(IXmlElementMapper mapper, ISequenceFormatter seq
             .Where(kv => ThisIsASequence(kv.Value));
 
         IdentifyMissingTypeNamesOfSequences(map.Descriptors);
+        DeclareRemainingTypeNamesAfterSequencesWereDone(map.Descriptors);
         var resultingClasses = CreateFutureClasses(futureClasses);
         SortInSequences(sequences, resultingClasses);
 
         return resultingClasses.Values;
     }
 
-    private void IdentifyMissingTypeNamesOfSequences(Dictionary<RelationKey, XmlElementDescriptor> mapDescriptors)
+    private static void DeclareRemainingTypeNamesAfterSequencesWereDone(
+        Dictionary<RelationKey, XmlElementDescriptor> mapDescriptors)
+    {
+        foreach (var (key, descriptor) in mapDescriptors)
+        {
+            if (descriptor.TypeName != GlobalConstants.UnknownTypeName) continue;
+
+            var finalTypeName = GetFinalTypeName(descriptor);
+            descriptor.TypeName = finalTypeName;
+
+            foreach (
+                var child
+                in descriptor.Children.Where(child => child.TypeName == GlobalConstants.UnknownTypeName)
+            )
+            {
+                Debug.Assert(child.ElementName != null);
+                var keyOfChildAsClass = key.CreateKeyForChild(child.ElementName);
+
+                // Because the child could still be a class, we need to check if it was identified as such.
+                // If not, we will leave it as an object, as the last resort.
+                child.TypeName = mapDescriptors.TryGetValue(keyOfChildAsClass, out var childAsClass)
+                    ? GetFinalTypeName(childAsClass)
+                    : "object";
+            }
+        }
+    }
+
+    private static string GetFinalTypeName(IXmlElementDescriptor descriptor)
+    {
+        if (descriptor.TypeName != GlobalConstants.UnknownTypeName)
+        {
+            return descriptor.TypeName;
+        }
+
+        // The descriptor has children and is not a sequence.
+        // Therefore, the element name defines the type as a class.
+        if (descriptor.Children.Count > 0)
+        {
+            return descriptor.ElementName
+                   ?? throw new InvalidOperationException("The element name should not be null");
+        }
+
+        // The remaining case is the descriptor being a leaf,
+        // with no type being identified before, therefore leaving it to be an object.
+        return "object";
+    }
+
+    private static void IdentifyMissingTypeNamesOfSequences(
+        Dictionary<RelationKey, XmlElementDescriptor> mapDescriptors)
     {
         ArgumentNullException.ThrowIfNull(mapDescriptors);
 
@@ -34,11 +83,11 @@ public class XmlClassIdentifier(IXmlElementMapper mapper, ISequenceFormatter seq
         foreach (var (_, potentialSequence) in allChildrenWithParentKey)
         {
             if (potentialSequence.TypeName != GlobalConstants.UnknownTypeName) continue;
-            
+
             var child = potentialSequence.Children[0];
             var childIsPotentialClass = child.TypeName == GlobalConstants.UnknownTypeName;
             Debug.Assert(child.ElementName != null);
-            var newTypeName = childIsPotentialClass ? child.ElementName : child.TypeName; 
+            var newTypeName = childIsPotentialClass ? child.ElementName : child.TypeName;
             potentialSequence.TypeName = newTypeName;
             child.TypeName = newTypeName;
         }
@@ -46,7 +95,7 @@ public class XmlClassIdentifier(IXmlElementMapper mapper, ISequenceFormatter seq
 
     private void SortInSequences(
         IEnumerable<KeyValuePair<RelationKey, XmlElementDescriptor>> sequences,
-        Dictionary<RelationKey, XmlClassDescriptor> resultingClasses
+        IReadOnlyDictionary<RelationKey, XmlClassDescriptor> resultingClasses
     )
     {
         ArgumentNullException.ThrowIfNull(resultingClasses);
@@ -91,6 +140,7 @@ public class XmlClassIdentifier(IXmlElementMapper mapper, ISequenceFormatter seq
 
             var classDescriptor = new XmlClassDescriptor()
             {
+                IsRoot = descriptor.IsRoot,
                 ElementName = descriptor.ElementName,
                 FromAttributes = remainingAttributes,
                 FromElements = fromElements
@@ -104,10 +154,14 @@ public class XmlClassIdentifier(IXmlElementMapper mapper, ISequenceFormatter seq
 
     private static bool ThisIsASequence(IXmlElementDescriptor descriptor)
     {
-        var elementHasJustOneChild = descriptor.Children.Count == 1;
+        // Because a sequence cannot be a collection of different elements, which would
+        // resolve to an array of 'object' being quite ambiguous.
+        if (descriptor.Children.Count != 1) return false;
+
+        var thisElementHadOnlyOneChildName = descriptor.Children.Count == 1;
         var theChildHasMultipleOccurrence = descriptor.Children[0].GroupCount > 1;
         // A sequence 
-        return elementHasJustOneChild && theChildHasMultipleOccurrence;
+        return thisElementHadOnlyOneChildName && theChildHasMultipleOccurrence;
     }
 
     private static List<XmlPropertyDescriptor> TransformToPropertyDescriptor(IEnumerable<IXmlItemDescriptor> attributes)

@@ -68,17 +68,25 @@ public class XmlElementMapper(ITypeIdentifier typeIdentifier) : IXmlElementMappe
         Debug.Assert(reader.NodeType == XmlNodeType.Element, "The reader must be on an element node.");
         var currentElementKey = parentElementPath.CreateKeyForChild(reader.Name);
         map.OnElementFound(currentElementKey);
+        // Because the reader will point on the last attribute using MapAttributesOfElement
+        // the reason to leave this function must be saved here.
+        var theElementDoesNotContainAnythingDoLeaveHere = reader.IsEmptyElement;
         map.OnAttributesFound(currentElementKey, MapAttributesOfElement(reader).ToList());
+
+        if (theElementDoesNotContainAnythingDoLeaveHere)
+        {
+            return;
+        }
 
         var textCache = new StringBuilder();
         var subElementCounts = new ElementCounter(currentElementKey);
         // Because we want the inner text of the element, we need to read the next elements.
-        // We hope for a text node and a end element node to finish the element.
+        // We hope for a text node and an end element node to finish the element.
         var childFound = false;
         while (reader.Read())
         {
             // Because the next element can only be a child of the current element,
-            // we need to jump into the next recurcive call of ParseElement.
+            // we need to jump into the next recursive call of ParseElement.
             if (reader.NodeType == XmlNodeType.Element)
             {
                 childFound = true;
