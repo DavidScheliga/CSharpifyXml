@@ -59,7 +59,7 @@ This is the sole section of the library
     - Drop if the element descriptor has no children and attributes, because they are primitives.
 - Processing phase (Associated classes: XmlElementProcessor)
     - Transform the remaining element descriptors to class descriptors.
-    - Generate the C# class file content using T4 templates, by using the class descriptors.
+    - Generate the C# class file content using a template framework, by using the class descriptors.
 
 Seam 2: Final output
 

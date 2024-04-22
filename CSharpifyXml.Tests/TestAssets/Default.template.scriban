@@ -1,0 +1,18 @@
+﻿using System.Xml.Serialization;
+
+// Generated code file by CSharpifyXml
+
+namespace {{ TargetNamespace }}
+
+public class {{ ClassName }} 
+{
+{{ for property in FromAttributes }}
+    [XmlAttribute("{{ property.Name }}")]
+    public {{ property.TypeName }} {{ property.Name }} { get; set; }
+{{ end }}
+
+{{ for property in FromElements }}
+    [XmlElement("{{ property.Name }}")]
+    public {{ property.TypeName }} {{ property.Name }} { get; set; }
+{{ end }}
+}

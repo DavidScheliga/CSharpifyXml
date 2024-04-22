@@ -1,4 +1,6 @@
-﻿namespace CSharpifyXml.Core.Tests.Helpers;
+﻿using CSharpifyXml.Core.Abstractions;
+
+namespace CSharpifyXml.Core.Tests.Helpers;
 
 public class TestConfig : IMappingConfiguration
 {

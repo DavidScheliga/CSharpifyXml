@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpifyXml.Core", "CSharp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpifyXml.Core.Tests", "CSharpifyXml.Core.Tests\CSharpifyXml.Core.Tests.csproj", "{2C73404B-BE89-4720-A688-6CDE18F85D53}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpifyXml", "CSharpifyXml\CSharpifyXml.csproj", "{3082A309-A47C-46F3-9EE7-FD9CBC2E7823}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharpifyXml.Tests", "CSharpifyXml.Tests\CSharpifyXml.Tests.csproj", "{0C443305-4C34-412B-987A-E863B2EBD970}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{2C73404B-BE89-4720-A688-6CDE18F85D53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C73404B-BE89-4720-A688-6CDE18F85D53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C73404B-BE89-4720-A688-6CDE18F85D53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3082A309-A47C-46F3-9EE7-FD9CBC2E7823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3082A309-A47C-46F3-9EE7-FD9CBC2E7823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3082A309-A47C-46F3-9EE7-FD9CBC2E7823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3082A309-A47C-46F3-9EE7-FD9CBC2E7823}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C443305-4C34-412B-987A-E863B2EBD970}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C443305-4C34-412B-987A-E863B2EBD970}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C443305-4C34-412B-987A-E863B2EBD970}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C443305-4C34-412B-987A-E863B2EBD970}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

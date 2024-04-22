@@ -1,4 +1,4 @@
-﻿namespace CSharpifyXml.Core;
+﻿namespace CSharpifyXml.Core.Abstractions;
 
 public interface IMappingConfiguration
 {

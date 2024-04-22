@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CSharpifyXml.Core.Abstractions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CSharpifyXml.Core.Tests.Helpers;
 
