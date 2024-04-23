@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using System.Diagnostics;
+using System.Text;
 using CommandLine;
 using CSharpifyXml.Core;
 using CSharpifyXml.Core.Abstractions;
@@ -19,11 +20,14 @@ public class CSharpifyXmlOptions
 
     [Value(2, MetaName = "TargetNamespace", Required = true, HelpText = "The namespace for the output class files.")]
     public string TargetNamespace { get; set; } = null!;
-
+    
     [Option('o', "output", Required = false, HelpText = "Output folder for the processed files.", Default = ".")]
-    public string OutputFolder { get; set; } = null!;
+    public string OutputPath { get; set; } = null!;
 
-    [Option("sequenceTemplate", Required = false,
+    [Option ("SingleFile", Required = false, HelpText = "Generate a single file for all classes.", Default = false)]
+    public bool SingleFile { get; set; }
+
+    [Option( "SequenceTemplate", Required = false,
         HelpText =
             "Set the template for representing a sequence in the output. The case-insensitive replacement token is '{{typeName}}'.",
         Default = "{{typeName}}[]")]
@@ -115,7 +119,7 @@ public class Program
         var foundClassDescriptions = identifier.Identify(xmlContentReader).ToList();
 
         var request = new ScribanGenerationRequest(opts.TargetNamespace, templateContent,
-            xmlDescriptions: foundClassDescriptions, opts.OutputFolder);
+            xmlDescriptions: foundClassDescriptions, opts.OutputPath);
         return RequestCreationResult.ForSucceed(request);
     }
 
@@ -133,12 +137,50 @@ public class Program
         Debug.Assert(requestCreationResult != null);
         var request = (ScribanGenerationRequest)requestCreationResult.Request!;
 
-        foreach (var codeToBeWritten in buildsTheCode.RenderClasses(request))
+        var renderedCode = buildsTheCode.RenderClasses(request);
+        if(opts.SingleFile)
         {
-            CreateClassCodeFile(codeToBeWritten, request.OutputFolder);
+            CreateSingleClassCodeFile(renderedCode, request.OutputFolder);
+        }
+        else
+        {
+            CreateMultipleClassCodeFiles(renderedCode, request.OutputFolder);
         }
     }
 
+    private static void CreateSingleClassCodeFile(IEnumerable<ClassFileContent> codeToBeWritten, string outputFolderPath)
+    {
+        Debug.Assert(codeToBeWritten != null, "There must be a result to write.");
+        Debug.Assert(!string.IsNullOrEmpty(outputFolderPath), "The output folder path must be defined.");
+
+        if (!Path.Exists(outputFolderPath))
+        {
+            throw new DirectoryNotFoundException($"The output path '{outputFolderPath}' could not be found.");
+        }
+        
+        var filepath = Path.Join(outputFolderPath, "GeneratedClasses.cs"); 
+        if (Path.Exists(filepath))
+        {
+            return;
+        }
+
+        var sb = new StringBuilder();
+        foreach(var code in codeToBeWritten)
+        {
+            sb.Append(code);
+        }
+        
+        File.WriteAllText(filepath, sb.ToString());
+    }
+
+    private static void CreateMultipleClassCodeFiles(IEnumerable<ClassFileContent> codeToBeWritten, string outputFolderPath)
+    {
+        foreach (var code in codeToBeWritten)
+        {
+            CreateClassCodeFile(code, outputFolderPath);
+        }
+    }
+    
     private static void CreateClassCodeFile(ClassFileContent codeToBeWritten, string outputFolderPath)
     {
         Debug.Assert(codeToBeWritten != null, "There must be a result to write.");

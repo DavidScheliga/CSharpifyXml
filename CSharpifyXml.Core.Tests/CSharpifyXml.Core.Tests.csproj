@@ -29,16 +29,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="TestAssets\TestCases\FooWithSubFoos.xml">
+      <None Update="TestAssets\TestCases\NestedClasses.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="TestAssets\TestCases\SingleFoo.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="TestAssets\TestCases\FooWithSubFoos.ExpectedClasses.json">
+      <None Update="TestAssets\TestCases\NestedClasses.ExpectedClasses.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="TestAssets\TestCases\FooWithSubFoos.ExpectedMap.json">
+      <None Update="TestAssets\TestCases\NestedClasses.ExpectedMap.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="TestAssets\TestCases\SingleFoo.ExpectedClasses.json">
@@ -47,22 +47,22 @@
       <None Update="TestAssets\TestCases\SingleFoo.ExpectedMap.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="TestAssets\TestCases\FooWithSelfClosing.xml">
+      <None Update="TestAssets\TestCases\SelfClosing.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="TestAssets\TestCases\FooWithSelfClosing.ExpectedClasses.json">
+      <None Update="TestAssets\TestCases\SelfClosing.ExpectedClasses.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="TestAssets\TestCases\FooWithSelfClosing.ExpectedMap.json">
+      <None Update="TestAssets\TestCases\SelfClosing.ExpectedMap.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="TestAssets\TestCases\FooSelfClosingWithAttributes.xml">
+      <None Update="TestAssets\TestCases\SelfClosingWithAttributes.xml">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="TestAssets\TestCases\FooSelfClosingWithAttributes.ExpectedClasses.json">
+      <None Update="TestAssets\TestCases\SelfClosingWithAttributes.ExpectedClasses.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="TestAssets\TestCases\FooSelfClosingWithAttributes.ExpectedMap.json">
+      <None Update="TestAssets\TestCases\SelfClosingWithAttributes.ExpectedMap.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="TestAssets\TestCases\NestedSequence.ExpectedMap.json">
@@ -72,6 +72,15 @@
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="TestAssets\TestCases\NestedSequence.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="TestAssets\TestCases\NestedSequenceWithClass.xml">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="TestAssets\TestCases\NestedSequenceWithClass.ExpectedMap.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="TestAssets\TestCases\NestedSequenceWithClass.ExpectedClasses.json">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
     </ItemGroup>

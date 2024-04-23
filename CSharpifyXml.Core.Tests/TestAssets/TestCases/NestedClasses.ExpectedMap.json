@@ -9,12 +9,14 @@
         "TypeName": "string"
       },
       {
-        "ElementName": "SubFoos"
+        "ElementName": "SubFoos",
+        "IsASequence": true
       }
     ]
   },
   {
     "ElementName": "SubFoos",
+    "IsASequence": true,
     "Attributes": [],
     "Children": [
       {

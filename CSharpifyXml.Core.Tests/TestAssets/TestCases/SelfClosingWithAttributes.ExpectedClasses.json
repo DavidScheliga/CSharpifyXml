@@ -5,6 +5,15 @@
     "FromElements": [
       {
         "Name": "ManyBars",
+        "TypeName": "ManyBars"
+      }
+    ]
+  },
+  {
+    "ElementName": "ManyBars",
+    "FromElements": [
+      {
+        "Name": "Bar",
         "TypeName": "Bar[]"
       }
     ]

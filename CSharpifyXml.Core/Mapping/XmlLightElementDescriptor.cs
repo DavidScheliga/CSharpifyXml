@@ -20,4 +20,9 @@ public class XmlLightElementDescriptor : IXmlLightElementDescriptor
     /// </summary>
     /// <remarks>Starts with 1 by default, because if this element only occurs on existance.</remarks>
     public int GroupCount { get; set; } = 1;
+
+    /// <summary>
+    /// States if this element is a sequence.
+    /// </summary>
+    public bool IsASequence => GroupCount > 1;
 }

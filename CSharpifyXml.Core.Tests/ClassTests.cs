@@ -1,4 +1,5 @@
-﻿using CSharpifyXml.Core.Mapping;
+﻿using System.Text.RegularExpressions;
+using CSharpifyXml.Core.Mapping;
 using CSharpifyXml.Core.Tests.Helpers;
 using FluentAssertions;
 
@@ -32,5 +33,20 @@ public class ClassTests
 
         // Assert
         resultingSequenceRepresentation.Should().Be(expectedRepresentation);
+    }
+
+
+    [Theory]
+    [InlineData("{{typeName}}[]", "Foo[]")]
+    [InlineData("List<{{ TYPENAME }}>", "List<Foo>")]
+    public void FormatterCanBeUsedToCreateACheckingPattern(string template, string shouldMatchThis)
+    {
+        const string newPattern = @"\w+";
+        var formatter = new SequenceFormatter(new TestConfig() { SequenceTemplate = template});
+        var sut = new Regex(formatter.FormatSequence(newPattern).Replace("[", @"\[").Replace("]", @"\]"));
+
+        var match = sut.Match(shouldMatchThis);
+        
+        match.Success.Should().BeTrue();
     }
 }

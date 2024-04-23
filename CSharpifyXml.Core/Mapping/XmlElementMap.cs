@@ -74,7 +74,7 @@ public class XmlElementMap(ITypeIdentifier typeIdentifier) : IXmlElementMap
                 {
                     ElementName = currentDescriptor.ElementName,
                     TypeName = currentDescriptor.TypeName,
-                    GroupCount = currentDescriptor.GroupCount,
+                    GroupCount = currentDescriptor.GroupCount
                 };
                 parentDescriptor!.Children.Add(newChild);
             }

@@ -4,12 +4,14 @@
     "ElementName": "Foo",
     "Children": [
       {
-        "ElementName": "ManyBars"
+        "ElementName": "ManyBars",
+        "IsASequence": true
       }
     ]
   },
   {
     "ElementName": "ManyBars",
+    "IsASequence": true,
     "Children": [
       {
         "ElementName": "Bar",

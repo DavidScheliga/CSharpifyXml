@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Table>
     <Rows>
-        <Row>1</Row>
-        <Row>A</Row>
-        <Row>a</Row>
+        <Col>1</Col>
+        <Col>A</Col>
+        <Col>a</Col>
     </Rows>
     <Rows>
-        <Row>2</Row>
-        <Row>B</Row>
-        <Row>b</Row>
+        <Col>2</Col>
+        <Col>B</Col>
+        <Col>b</Col>
     </Rows>
 </Table>

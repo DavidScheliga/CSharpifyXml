@@ -1,0 +1,58 @@
+﻿[
+  {
+    "IsRoot": true,
+    "ElementName": "Table",
+    "Children": [
+      {
+        "ElementName": "TableName",
+        "TypeName": "string"
+      },
+      {
+        "ElementName": "Description",
+        "TypeName": "string"
+      },
+      {
+        "ElementName": "Rows",
+        "IsASequence": true,
+        "GroupCount": 2
+      }
+    ]
+  },
+  {
+    "ElementName": "Rows",
+    "IsASequence": true,
+    "GroupCount": 2,
+    "Children": [
+      {
+        "ElementName": "Row",
+        "IsASequence": true,
+        "GroupCount": 2
+      }
+    ]
+  },
+  {
+    "ElementName": "Row",
+    "GroupCount": 2,
+    "IsASequence": true,
+    "Children": [
+      {
+        "ElementName": "Cell",
+        "GroupCount": 2
+      }
+    ]
+  },
+  {
+    "ElementName": "Cell",
+    "GroupCount": 2,
+    "Children": [
+      {
+        "ElementName": "Col",
+        "TypeName": "string"
+      },
+      {
+        "ElementName": "Value",
+        "TypeName": "int"
+      }
+    ]
+  }
+]

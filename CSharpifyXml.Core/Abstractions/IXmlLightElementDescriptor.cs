@@ -10,4 +10,9 @@ public interface IXmlLightElementDescriptor : IXmlItemDescriptor
     /// </summary>
     /// <remarks>Starts with 1 by default, because if this element only occurs on existance.</remarks>
     int GroupCount { get; set; }
+
+    /// <summary>
+    /// States if this element is a sequence.
+    /// </summary>
+    bool IsASequence { get; }
 }

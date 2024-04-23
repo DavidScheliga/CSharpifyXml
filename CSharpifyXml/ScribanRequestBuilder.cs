@@ -17,7 +17,7 @@ public class ScribanRequestBuilder(IXmlClassIdentifier identifier, ILogger? logg
     {
         return WithNamespace(options.TargetNamespace)
             .WithTemplate(options.TemplateFile)
-            .WithOutputFolder(options.OutputFolder);
+            .WithOutputFolder(options.OutputPath);
     }
 
     private ScribanRequestBuilder WithNamespace(string targetNamespace)

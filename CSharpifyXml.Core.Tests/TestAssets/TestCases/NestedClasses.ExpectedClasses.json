@@ -9,10 +9,19 @@
       },
       {
         "Name": "SubFoos",
-        "TypeName": "SubFoo[]"
+        "TypeName": "SubFoos"
       }
     ]
   },
+    {
+        "ElementName": "SubFoos",
+        "FromElements": [
+        {
+            "Name": "SubFoo",
+            "TypeName": "SubFoo[]"
+        }
+        ]
+    },
   {
     "ElementName": "SubFoo",
     "FromElements": [

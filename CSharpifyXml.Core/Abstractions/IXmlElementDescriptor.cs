@@ -8,6 +8,8 @@ public interface IXmlElementDescriptor : IXmlLightElementDescriptor
     /// States if the element is the root element of the XML given.
     /// </summary>
     bool IsRoot { get; set; }
+    
+    bool IsLeaf { get; }
 
     /// <summary>
     /// The attributes of the element.

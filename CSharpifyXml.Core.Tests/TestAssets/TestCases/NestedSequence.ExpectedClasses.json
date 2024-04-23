@@ -4,17 +4,17 @@
     "ElementName": "Table",
     "FromElements": [
       {
-        "ElementName": "Rows",
+        "Name": "Rows",
         "TypeName" : "Rows[]"
       }
     ]
   },
   {
     "ElementName": "Rows",
-    "Children": [
+    "FromElements": [
       {
-        "ElementName": "Row",
-        "TypeName" : "object[]"
+        "Name": "Col",
+        "TypeName" : "string[]"
       }
     ]
   }

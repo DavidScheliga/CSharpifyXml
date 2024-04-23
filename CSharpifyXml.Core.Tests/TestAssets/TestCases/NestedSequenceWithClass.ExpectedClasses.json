@@ -1,0 +1,51 @@
+﻿[
+  {
+    "IsRoot": true,
+    "ElementName": "Table",
+    "FromElements": [
+      {
+        "Name": "TableName",
+        "TypeName": "string"
+      },
+      {
+        "Name": "Description",
+        "TypeName": "string"
+      },
+      {
+        "Name": "Rows",
+        "TypeName": "Rows[]"
+      }
+    ]
+  },
+  {
+    "ElementName": "Rows",
+    "FromElements": [
+      {
+        "Name": "Row",
+        "TypeName": "Row[]"
+      }
+    ]
+  },
+  {
+    "ElementName": "Row",
+    "FromElements": [
+      {
+        "Name": "Cell",
+        "TypeName": "Cell[]"
+      }
+    ]
+  },
+  {
+    "ElementName": "Cell",
+    "FromElements": [
+      {
+        "Name": "Col",
+        "TypeName": "string"
+      },
+      {
+        "Name": "Value",
+        "TypeName": "int"
+      }
+    ]
+  }
+]

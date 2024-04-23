@@ -16,7 +16,6 @@ public record RelationKey(string ElementName, string ParentPath)
     private string ElementPath => Path.Join(ParentPath, ElementName);
 
     public RelationKey CreateKeyForChild(string childName) => new(childName, ElementPath);
-    public RelationKey CreateKeyForChild(string childName, int index) => new(childName, ElementPath);
 
     public static readonly RelationKey Root = new(string.Empty, RootPath);
 

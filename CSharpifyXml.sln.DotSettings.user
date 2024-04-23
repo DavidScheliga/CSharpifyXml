@@ -1,9 +1,12 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=eb1a03af_002Dd7bb_002D44c3_002D886e_002Da4f5ff861d52/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;CSharpifyXml.Core.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
     &lt;TestId&gt;xUnit::2C73404B-BE89-4720-A688-6CDE18F85D53::net8.0::CSharpifyXml.Core.Tests.MainTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::2C73404B-BE89-4720-A688-6CDE18F85D53::net8.0::CSharpifyXml.Core.Tests.ClassTests.RelationHashWorksAsExpected&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::2C73404B-BE89-4720-A688-6CDE18F85D53::net8.0::CSharpifyXml.Core.Tests.ClassTests.RelationKeysAreEqualByTheParentElement&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::2C73404B-BE89-4720-A688-6CDE18F85D53::net8.0::CSharpifyXml.Core.Tests.ClassTests.FormatterCanBeUsedToCreateACheckingPattern&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::0C443305-4C34-412B-987A-E863B2EBD970::net8.0::CSharpifyXml.Tests.MainTests&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

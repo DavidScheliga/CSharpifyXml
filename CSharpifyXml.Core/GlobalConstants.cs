@@ -3,5 +3,5 @@
 public static class GlobalConstants
 {
     public const string UnknownTypeName = "unknown";
-    public const string DefaultSequenceTemplate = "{{typeName}}[]"; 
+    public const string DefaultSequenceTemplate = "{{typeName}}[]";
 }

@@ -4,24 +4,17 @@ using CSharpifyXml.Core.Mapping;
 
 namespace CSharpifyXml.Core;
 
-public class XmlClassIdentifier(IXmlElementMapper mapper, ISequenceFormatter sequenceFormatter) : IXmlClassIdentifier
+public partial class XmlClassIdentifier(IXmlElementMapper mapper, ISequenceFormatter sequenceFormatter)
+    : IXmlClassIdentifier
 {
     public IEnumerable<XmlClassDescriptor> Identify(StreamReader textReader)
     {
         // Split the descriptors into classes and potential sequences, which will be
         // properties of the classes.
         var map = mapper.Map(textReader);
-
-        var futureClasses = map.Descriptors
-            .Where(kv => !ThisIsASequence(kv.Value));
-        var sequences = map.Descriptors
-            .Where(kv => ThisIsASequence(kv.Value));
-
-        IdentifyMissingTypeNamesOfSequences(map.Descriptors);
+        IdentifySequenceTypeNames(map.Descriptors, sequenceFormatter);
         DeclareRemainingTypeNamesAfterSequencesWereDone(map.Descriptors);
-        var resultingClasses = CreateFutureClasses(futureClasses);
-        SortInSequences(sequences, resultingClasses);
-
+        var resultingClasses = CreateFutureClasses(map.Descriptors);
         return resultingClasses.Values;
     }
 
@@ -72,52 +65,6 @@ public class XmlClassIdentifier(IXmlElementMapper mapper, ISequenceFormatter seq
         return "object";
     }
 
-    private static void IdentifyMissingTypeNamesOfSequences(
-        Dictionary<RelationKey, XmlElementDescriptor> mapDescriptors)
-    {
-        ArgumentNullException.ThrowIfNull(mapDescriptors);
-
-        var allChildrenWithParentKey = mapDescriptors
-            .Where(kv => ThisIsASequence(kv.Value));
-
-        foreach (var (_, potentialSequence) in allChildrenWithParentKey)
-        {
-            if (potentialSequence.TypeName != GlobalConstants.UnknownTypeName) continue;
-
-            var child = potentialSequence.Children[0];
-            var childIsPotentialClass = child.TypeName == GlobalConstants.UnknownTypeName;
-            Debug.Assert(child.ElementName != null);
-            var newTypeName = childIsPotentialClass ? child.ElementName : child.TypeName;
-            potentialSequence.TypeName = newTypeName;
-            child.TypeName = newTypeName;
-        }
-    }
-
-    private void SortInSequences(
-        IEnumerable<KeyValuePair<RelationKey, XmlElementDescriptor>> sequences,
-        IReadOnlyDictionary<RelationKey, XmlClassDescriptor> resultingClasses
-    )
-    {
-        ArgumentNullException.ThrowIfNull(resultingClasses);
-
-        foreach (var (key, descriptor) in sequences)
-        {
-            var targetParentKey = key.GetParent();
-            Debug.Assert(resultingClasses.ContainsKey(targetParentKey),
-                $"The key {targetParentKey} should be present in the dictionary");
-
-            var newProperty = new XmlPropertyDescriptor()
-            {
-                Name = key.ElementName,
-                TypeName = sequenceFormatter.FormatSequence(descriptor.Children[0].TypeName)
-            };
-
-            // Drop existing element with same name.
-            resultingClasses[targetParentKey].FromElements.RemoveAll(x => x.Name == newProperty.Name);
-            resultingClasses[targetParentKey].FromElements.Add(newProperty);
-        }
-    }
-
     private static Dictionary<RelationKey, XmlClassDescriptor> CreateFutureClasses(
         IEnumerable<KeyValuePair<RelationKey, XmlElementDescriptor>> futureClasses
     )
@@ -125,43 +72,35 @@ public class XmlClassIdentifier(IXmlElementMapper mapper, ISequenceFormatter seq
         var resultingClasses = new Dictionary<RelationKey, XmlClassDescriptor>();
         foreach (var (key, descriptor) in futureClasses)
         {
-            Debug.Assert(descriptor.ElementName != null);
-
-            var fromAttributes = TransformToPropertyDescriptor(descriptor.Attributes);
-            var fromElements = TransformToPropertyDescriptor(descriptor.Children);
-
-            var namesToDropInAttributes = fromElements
-                .Select(x => x.Name)
-                .Except(fromAttributes.Select(x => x.Name));
-
-            var remainingAttributes = fromAttributes
-                .Where(x => !namesToDropInAttributes.Contains(x.Name))
-                .ToList();
-
-            var classDescriptor = new XmlClassDescriptor()
-            {
-                IsRoot = descriptor.IsRoot,
-                ElementName = descriptor.ElementName,
-                FromAttributes = remainingAttributes,
-                FromElements = fromElements
-            };
-
+            var classDescriptor = CreateClassDescriptor(descriptor);
             resultingClasses.Add(key, classDescriptor);
         }
 
         return resultingClasses;
     }
 
-    private static bool ThisIsASequence(IXmlElementDescriptor descriptor)
+    private static XmlClassDescriptor CreateClassDescriptor(XmlElementDescriptor descriptor)
     {
-        // Because a sequence cannot be a collection of different elements, which would
-        // resolve to an array of 'object' being quite ambiguous.
-        if (descriptor.Children.Count != 1) return false;
+        Debug.Assert(descriptor.ElementName != null);
+        var fromAttributes = TransformToPropertyDescriptor(descriptor.Attributes);
+        var fromElements = TransformToPropertyDescriptor(descriptor.Children);
 
-        var thisElementHadOnlyOneChildName = descriptor.Children.Count == 1;
-        var theChildHasMultipleOccurrence = descriptor.Children[0].GroupCount > 1;
-        // A sequence 
-        return thisElementHadOnlyOneChildName && theChildHasMultipleOccurrence;
+        var namesToDropInAttributes = fromElements
+            .Select(x => x.Name)
+            .Except(fromAttributes.Select(x => x.Name));
+
+        var remainingAttributes = fromAttributes
+            .Where(x => !namesToDropInAttributes.Contains(x.Name))
+            .ToList();
+
+        var classDescriptor = new XmlClassDescriptor()
+        {
+            IsRoot = descriptor.IsRoot,
+            ElementName = descriptor.ElementName,
+            FromAttributes = remainingAttributes,
+            FromElements = fromElements
+        };
+        return classDescriptor;
     }
 
     private static List<XmlPropertyDescriptor> TransformToPropertyDescriptor(IEnumerable<IXmlItemDescriptor> attributes)

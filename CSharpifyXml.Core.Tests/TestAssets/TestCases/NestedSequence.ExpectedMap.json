@@ -2,19 +2,23 @@
   {
     "IsRoot": true,
     "ElementName": "Table",
+    "IsASequence": true,
     "Children": [
       {
         "ElementName": "Rows",
+        "IsASequence": true,
         "GroupCount": 2
       }
     ]
   },
   {
     "ElementName": "Rows",
+    "IsASequence": true,
     "GroupCount": 2,
     "Children": [
       {
-        "ElementName": "Row",
+        "ElementName": "Col",
+        "IsASequence": true,
         "TypeName": "string",
         "GroupCount": 3
       }

@@ -1,5 +1,4 @@
 using CSharpifyXml.Core;
-using CSharpifyXml.Core.Abstractions;
 using CSharpifyXml.Tests.Helpers;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,7 +11,7 @@ public class MainTests
     {
         var services = new ServiceCollection();
         services.ConfigureCSharpifyServices();
-        services.AddSingleton<IMappingConfiguration>(MappingConfiguration.Default());
+        services.AddSingleton(MappingConfiguration.Default());
         services.AddTransient<ITemplateCodeBuilder, ScribanTemplateCodeBuilder>();
         return services.BuildServiceProvider();
     }
