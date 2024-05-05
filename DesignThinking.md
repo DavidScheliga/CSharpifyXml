@@ -134,3 +134,12 @@ with a name and a list of fields. The user can then use this class to generate t
 + bool: IsAttribute
 + string: FieldName
 + string: FieldType
+
+## Iteration of Mai 2024
+
+### Prototype update
+
+The first draft showed a weakness against under-defined data. A system provides a set of xml files,
+which come from the same schema. In some xml files an actual array may have either no element or only one element.
+Although each resulting classes will work with the xml data, the mapper should be able to consider multiple
+xml files, to reveal the hidden schema of a set of xml files.

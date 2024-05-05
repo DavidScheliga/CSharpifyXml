@@ -1,21 +1,51 @@
 ﻿using System.Diagnostics;
+using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 using CSharpifyXml.Core.Abstractions;
 using CSharpifyXml.Core.Mapping;
+using Microsoft.Extensions.Logging;
 
 namespace CSharpifyXml.Core;
 
-public partial class XmlClassIdentifier(IXmlElementMapper mapper, ISequenceFormatter sequenceFormatter)
+public partial class XmlClassIdentifier(
+    IXmlElementMapper mapper,
+    ISequenceFormatter sequenceFormatter,
+    ILogger<IXmlClassIdentifier>? logger = null)
     : IXmlClassIdentifier
 {
-    public IEnumerable<XmlClassDescriptor> Identify(StreamReader textReader)
+    public IXmlClassIdentifier Identify(StreamReader textReader)
     {
         // Split the descriptors into classes and potential sequences, which will be
         // properties of the classes.
-        var map = mapper.Map(textReader);
+        mapper.AddToMap(textReader);
+        return this;
+    }
+
+    public IEnumerable<XmlClassDescriptor> GetDescriptors()
+    {
+        var map = mapper.CreateMap();
         IdentifySequenceTypeNames(map.Descriptors, sequenceFormatter);
         DeclareRemainingTypeNamesAfterSequencesWereDone(map.Descriptors);
+        LogDebugDescriptors(descriptors:map.Descriptors);
         var resultingClasses = CreateFutureClasses(map.Descriptors);
         return resultingClasses.Values;
+    }
+
+    private void LogDebugDescriptors(Dictionary<RelationKey, XmlElementDescriptor> descriptors)
+    {
+        if (logger is null) return;
+
+        var jsonSettings = new JsonSerializerOptions()
+        {
+            WriteIndented = true,
+            TypeInfoResolver = new DefaultJsonTypeInfoResolver()
+        };
+
+        foreach (var (key, elementDescription) in descriptors)
+        {
+            var jsonText = JsonSerializer.Serialize(elementDescription, jsonSettings);
+            logger.LogDebug(@"Element {key} mapped\r\n{jsonText}", key.ToString(), jsonText);
+        }
     }
 
     private static void DeclareRemainingTypeNamesAfterSequencesWereDone(

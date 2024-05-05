@@ -13,6 +13,8 @@ namespace CSharpifyXml.Core.Mapping;
 /// <param name="typeIdentifier"></param>
 public class XmlElementMapper(ITypeIdentifier typeIdentifier) : IXmlElementMapper
 {
+    private XmlElementMap? _activeMap;
+    
     private sealed class ElementCounter(RelationKey parentKey)
     {
         private readonly Dictionary<RelationKey, int> _counts = new();
@@ -120,21 +122,34 @@ public class XmlElementMapper(ITypeIdentifier typeIdentifier) : IXmlElementMappe
         }
     }
 
+    private XmlElementMap GetMapInstance()
+    {
+        return _activeMap ??= new XmlElementMap(typeIdentifier);
+    }
+
     /// <summary>
     /// Maps the xml content into the <see cref="XmlElementMap">xml element map</see>.
     /// </summary>
     /// <param name="coupleXmlStream">The xml content as pure text.</param>
     /// <returns>The map of the xml elements.</returns>
-    public XmlElementMap Map(StreamReader coupleXmlStream)
+    public void AddToMap(StreamReader coupleXmlStream)
     {
-        // We will start with an empty map.
-        var freshMap = new XmlElementMap(typeIdentifier);
+        var activeMap = GetMapInstance();
         // Because we are only summarizing the xml elements like a book index,
         // we will take the element names, their attributes and either
         // the inner text, if it is a leaf, or continue with the children.
-        StartParsingXmlToMap(ref freshMap, coupleXmlStream);
-        freshMap.Finish();
-        return freshMap;
+        StartParsingXmlToMap(ref activeMap, coupleXmlStream);
+    }
+
+    public XmlElementMap CreateMap()
+    {
+        if (_activeMap == null)
+        {
+            throw new InvalidOperationException("Nothing was mapped before.");
+        }
+
+        _activeMap.Finish();
+        return _activeMap;
     }
 
     private IEnumerable<XmlAttributeDescriptor> MapAttributesOfElement(XmlReader xmlReader)

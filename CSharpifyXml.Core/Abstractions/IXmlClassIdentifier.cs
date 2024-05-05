@@ -10,5 +10,6 @@ namespace CSharpifyXml.Core.Abstractions;
 /// </summary>
 public interface IXmlClassIdentifier
 {
-    IEnumerable<XmlClassDescriptor> Identify(StreamReader textReader);
+    IXmlClassIdentifier Identify(StreamReader textReader);
+    IEnumerable<XmlClassDescriptor> GetDescriptors();
 }

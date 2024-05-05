@@ -25,17 +25,18 @@ public class MainTests : ATestClass
         // Arrange
         // This is the user's dependency injection container.
         var sutProvider = CreateTestServiceProvider();
-        
+
         // Within this test we are only interested in the XmlClassIdentifier
         // because this is our main entry point.
         var sut = sutProvider.GetRequiredService<IXmlClassIdentifier>();
 
         // Act
-        List<XmlClassDescriptor> result;
         using (var sampleStream = sample.OpenXmlStream())
         {
-            result = sut.Identify(sampleStream).ToList();
+            sut.Identify(sampleStream);
         }
+
+        var result = sut.GetDescriptors().ToList();
 
         // Assert
         result.Should().NotBeNull(because: "The sample steam should contain a valid XML file. Check the test case.");
@@ -49,18 +50,48 @@ public class MainTests : ATestClass
     public void SuccessfulMapTestCases(TestSample sample)
     {
         // Arrange
-        var sutProvider = CreateTestServiceProvider(); 
+        var sutProvider = CreateTestServiceProvider();
         var elementMapperSut = sutProvider.GetRequiredService<IXmlElementMapper>();
-        
+
         // Act
         XmlElementMap elementMap;
         using (var sampleStream = sample.OpenXmlStream())
         {
-            elementMap = elementMapperSut.Map(sampleStream);
+            elementMapperSut.AddToMap(sampleStream);
+            elementMap = elementMapperSut.CreateMap();
         }
 
         // Assert
-        elementMap.Should().NotBeNull(because: "The sample steam should contain a valid XML file. Check the test case.");
+        elementMap.Should()
+            .NotBeNull(because: "The sample steam should contain a valid XML file. Check the test case.");
+        var descriptors = elementMap.Descriptors.Values.ToList();
+        var expectedMap = (List<XmlElementDescriptor>)sample.ExpectedResult;
+        descriptors.Should().NotBeNull();
+        descriptors.Should().BeEquivalentTo(expectedMap);
+    }
+
+
+    [Theory]
+    [MappingTestCase(@".\TestAssets\TestCases")]
+    public void IdenticalXmlContentCanBeMappedMultipleTimes(TestSample sample)
+    {
+        // Arrange
+        var sutProvider = CreateTestServiceProvider();
+        var elementMapperSut = sutProvider.GetRequiredService<IXmlElementMapper>();
+
+        // Act
+        XmlElementMap elementMap;
+        const int twiceIsEnoughAsMulipleTimes = 2;
+        for (var i = 0; i < twiceIsEnoughAsMulipleTimes; i++)
+        {
+            using var sampleStream = sample.OpenXmlStream();
+            elementMapperSut.AddToMap(sampleStream);
+        }
+
+        elementMap = elementMapperSut.CreateMap();
+        // Assert
+        elementMap.Should()
+            .NotBeNull(because: "The sample steam should contain a valid XML file. Check the test case.");
         var descriptors = elementMap.Descriptors.Values.ToList();
         var expectedMap = (List<XmlElementDescriptor>)sample.ExpectedResult;
         descriptors.Should().NotBeNull();

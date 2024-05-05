@@ -97,13 +97,14 @@ public class ScribanRequestBuilder(IXmlClassIdentifier identifier, ILogger? logg
             targetNamespace: _targetNamespace,
             templateContent: templateContent,
             xmlDescriptions: classDescriptions.ToList(),
-            outputFolder: _outputFolder
+            outputPath: _outputFolder
         );
     }
 
     private IEnumerable<XmlClassDescriptor> GetDescriptions(string xmlFilepath)
     {
         using var fileStream = new StreamReader(xmlFilepath);
-        return identifier.Identify(fileStream);
+        identifier.Identify(fileStream);
+        return identifier.GetDescriptors();
     }
 }

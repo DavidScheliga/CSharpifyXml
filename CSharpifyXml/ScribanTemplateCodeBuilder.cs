@@ -6,6 +6,10 @@ namespace CSharpifyXml;
 
 public class ScribanTemplateCodeBuilder : ITemplateCodeBuilder
 {
+    /// <summary>
+    /// Translates the XmlClassDescriptors to Scriban script objects,
+    /// which can be injected into the scriban template.
+    /// </summary>
     private sealed class InjectionModelBuilder
     {
         private readonly ScriptObject _model = new();
@@ -30,6 +34,12 @@ public class ScribanTemplateCodeBuilder : ITemplateCodeBuilder
             return _model;
         }
 
+        /// <summary>
+        /// Translates a collection of <see cref="XmlPropertyDescriptor"/> into an <see cref="ScriptArray"/>.
+        /// This allows to iterate through the properties using loops within the scriban template.
+        /// </summary>
+        /// <param name="descriptors">Descriptors of the class properties.</param>
+        /// <returns>The <see cref="ScriptArray"/> containing the property descriptions.</returns>
         private static ScriptArray FromPropertyDescriptors(List<XmlPropertyDescriptor> descriptors)
         {
             var scriptArray = new ScriptArray();

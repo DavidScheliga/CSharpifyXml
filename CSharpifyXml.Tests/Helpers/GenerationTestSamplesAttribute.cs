@@ -50,7 +50,9 @@ public class GenerationTestSamplesAttribute(string testCaseRootFolderPath, strin
     private IEnumerable<XmlClassDescriptor> GetXmlDescriptors(string xmlFilepath)
     {
         using var xmlStream = new StreamReader(xmlFilepath);
-        var map = GetIdentifierInstance().Identify(xmlStream);
+        var identifier = GetIdentifierInstance();
+        identifier.Identify(xmlStream);
+        var map = identifier.GetDescriptors(); 
         return map;
     }
 

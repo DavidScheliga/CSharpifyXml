@@ -6,7 +6,7 @@ public class ScribanGenerationRequest(
     string targetNamespace,
     string templateContent,
     List<XmlClassDescriptor> xmlDescriptions,
-    string outputFolder = "./"
+    string outputPath = "./"
 )
 {
     public string TargetNamespace { get; set; } = targetNamespace;
@@ -25,5 +25,5 @@ public class ScribanGenerationRequest(
     /// <summary>
     /// The output folder for the classs files. 
     /// </summary>
-    public string OutputFolder { get; set; } = outputFolder;
+    public string OutputPath { get; set; } = outputPath;
 }
