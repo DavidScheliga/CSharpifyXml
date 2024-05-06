@@ -28,7 +28,21 @@ public partial class XmlClassIdentifier(
         DeclareRemainingTypeNamesAfterSequencesWereDone(map.Descriptors);
         LogDebugDescriptors(descriptors:map.Descriptors);
         var resultingClasses = CreateFutureClasses(map.Descriptors);
+        MarkPropertyTypesAsClassesIfFromElement(resultingClasses);
         return resultingClasses.Values;
+    }
+
+    private static void MarkPropertyTypesAsClassesIfFromElement(Dictionary<RelationKey,XmlClassDescriptor> resultingClasses)
+    {
+        foreach (var (parentKey, parent) in resultingClasses)
+        {
+            foreach (var property in parent.FromElements)
+            {
+                var childKey = parentKey.CreateKeyForChild(property.Name);
+                var thisChildExistAsAClass = resultingClasses.ContainsKey(childKey);
+                property.IsClass = thisChildExistAsAClass;
+            }
+        }
     }
 
     private void LogDebugDescriptors(Dictionary<RelationKey, XmlElementDescriptor> descriptors)
@@ -44,7 +58,7 @@ public partial class XmlClassIdentifier(
         foreach (var (key, elementDescription) in descriptors)
         {
             var jsonText = JsonSerializer.Serialize(elementDescription, jsonSettings);
-            logger.LogDebug(@"Element {key} mapped\r\n{jsonText}", key.ToString(), jsonText);
+            logger.LogDebug(@"Element {Key} mapped\r\n{JsonText}", key.ToString(), jsonText);
         }
     }
 
@@ -115,19 +129,11 @@ public partial class XmlClassIdentifier(
         var fromAttributes = TransformToPropertyDescriptor(descriptor.Attributes);
         var fromElements = TransformToPropertyDescriptor(descriptor.Children);
 
-        var namesToDropInAttributes = fromElements
-            .Select(x => x.Name)
-            .Except(fromAttributes.Select(x => x.Name));
-
-        var remainingAttributes = fromAttributes
-            .Where(x => !namesToDropInAttributes.Contains(x.Name))
-            .ToList();
-
         var classDescriptor = new XmlClassDescriptor()
         {
             IsRoot = descriptor.IsRoot,
             ElementName = descriptor.ElementName,
-            FromAttributes = remainingAttributes,
+            FromAttributes = fromAttributes,
             FromElements = fromElements
         };
         return classDescriptor;

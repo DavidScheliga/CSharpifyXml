@@ -99,6 +99,7 @@ public class Program
     {
         services.ConfigureCSharpifyServices();
         services.AddSingleton<ITemplateCodeBuilder, ScribanTemplateCodeBuilder>();
+        services.AddSingleton<ISharpifyCommandManager, SharpifyCommandManager>();
         services.AddLogging(configure =>
             {
                 configure.AddConsole();
@@ -163,6 +164,7 @@ public class Program
     private static void RunApplication(CSharpifyXmlOptions opts)
     {
         var buildsTheCode = GetRequiredService<ITemplateCodeBuilder>(opts);
+        var commandManager = GetRequiredService<ISharpifyCommandManager>(opts);
 
         var requestCreationResult = CreateScribanRequest(opts);
         if (!requestCreationResult.Success)
@@ -174,7 +176,10 @@ public class Program
         Debug.Assert(requestCreationResult != null);
         var request = (ScribanGenerationRequest)requestCreationResult.Request!;
 
-        var renderedCode = buildsTheCode.RenderClasses(request);
+        var renderedCode = buildsTheCode
+            .RenderClasses(request)
+            .Select(commandManager.EvaluateCommandsInContent)
+            .ToList();
         if (opts.SingleFile)
         {
             CreateSingleClassCodeFile(renderedCode, request.OutputPath);
@@ -216,8 +221,10 @@ public class Program
         File.WriteAllText(filepath, sb.ToString());
     }
 
-    private static void CreateMultipleClassCodeFiles(IEnumerable<ClassFileContent> codeToBeWritten,
-        string outputFolderPath)
+    private static void CreateMultipleClassCodeFiles(
+        IEnumerable<ClassFileContent> codeToBeWritten,
+        string outputFolderPath
+    )
     {
         foreach (var code in codeToBeWritten)
         {
@@ -237,7 +244,6 @@ public class Program
         {
             return;
         }
-
         File.WriteAllText(filepath, codeToBeWritten.Content);
     }
 

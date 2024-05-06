@@ -5,7 +5,8 @@
     "FromElements": [
       {
         "Name": "ManyBars",
-        "TypeName": "ManyBars"
+        "TypeName": "ManyBars",
+        "IsClass": true
       }
     ]
   },
@@ -14,7 +15,8 @@
     "FromElements": [
       {
         "Name": "Bar",
-        "TypeName": "Bar[]"
+        "TypeName": "Bar[]",
+        "IsClass": true
       }
     ]
   },

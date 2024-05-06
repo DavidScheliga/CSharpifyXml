@@ -5,7 +5,8 @@
     "FromElements": [
       {
         "Name": "Rows",
-        "TypeName" : "Rows[]"
+        "TypeName" : "Rows[]",
+        "IsClass": true
       }
     ]
   },

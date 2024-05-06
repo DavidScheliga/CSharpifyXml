@@ -48,6 +48,7 @@ public class ScribanTemplateCodeBuilder : ITemplateCodeBuilder
                 var scriptObject = new ScriptObject();
                 scriptObject["Name"] = descriptor.Name;
                 scriptObject["TypeName"] = descriptor.TypeName;
+                scriptObject["IsClass"] = descriptor.IsClass;
                 scriptArray.Add(scriptObject);
             }
 

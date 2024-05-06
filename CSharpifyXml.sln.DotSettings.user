@@ -5,8 +5,7 @@
     &lt;TestId&gt;xUnit::2C73404B-BE89-4720-A688-6CDE18F85D53::net8.0::CSharpifyXml.Core.Tests.MainTests&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::2C73404B-BE89-4720-A688-6CDE18F85D53::net8.0::CSharpifyXml.Core.Tests.ClassTests.RelationHashWorksAsExpected&lt;/TestId&gt;&#xD;
     &lt;TestId&gt;xUnit::2C73404B-BE89-4720-A688-6CDE18F85D53::net8.0::CSharpifyXml.Core.Tests.ClassTests.RelationKeysAreEqualByTheParentElement&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::2C73404B-BE89-4720-A688-6CDE18F85D53::net8.0::CSharpifyXml.Core.Tests.ClassTests.FormatterCanBeUsedToCreateACheckingPattern&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::0C443305-4C34-412B-987A-E863B2EBD970::net8.0::CSharpifyXml.Tests.MainTests&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::0C443305-4C34-412B-987A-E863B2EBD970::net8.0::CSharpifyXml.Tests.SharpifyCommandTests.FilenameIsDetectedAndCorrectlyReplaced&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
 	

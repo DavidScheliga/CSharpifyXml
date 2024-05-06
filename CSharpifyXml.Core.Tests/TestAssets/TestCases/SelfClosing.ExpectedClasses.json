@@ -9,7 +9,8 @@
       },
       {
         "Name": "SubFoo",
-        "TypeName": "SubFoo"
+        "TypeName": "SubFoo",
+        "IsClass": true
       },
       {
         "Name": "AfterSubFoo",

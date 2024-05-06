@@ -5,17 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CSharpifyXml.Tests;
 
-public class MainTests
+public class MainTests : BaseTestClass
 {
-    private static ServiceProvider CreateTestServiceProvider()
-    {
-        var services = new ServiceCollection();
-        services.ConfigureCSharpifyServices();
-        services.AddSingleton(MappingConfiguration.Default());
-        services.AddTransient<ITemplateCodeBuilder, ScribanTemplateCodeBuilder>();
-        return services.BuildServiceProvider();
-    }
-
     [Theory]
     [GenerationTestSamples("./TestAssets", "./TestAssets/Default.template.scriban")]
     public void DefaultGenerationOfClassFilesWorks(GenerationSample sample)

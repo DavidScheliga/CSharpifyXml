@@ -13,7 +13,8 @@
       },
       {
         "Name": "Rows",
-        "TypeName": "Rows[]"
+        "TypeName": "Rows[]",
+        "IsClass": true
       }
     ]
   },
@@ -22,7 +23,8 @@
     "FromElements": [
       {
         "Name": "Row",
-        "TypeName": "Row[]"
+        "TypeName": "Row[]",
+        "IsClass": true
       }
     ]
   },
@@ -31,7 +33,8 @@
     "FromElements": [
       {
         "Name": "Cell",
-        "TypeName": "Cell[]"
+        "TypeName": "Cell[]",
+        "IsClass": true
       }
     ]
   },

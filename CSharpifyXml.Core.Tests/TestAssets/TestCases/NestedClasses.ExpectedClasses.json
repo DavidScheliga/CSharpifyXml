@@ -9,25 +9,27 @@
       },
       {
         "Name": "SubFoos",
-        "TypeName": "SubFoos"
+        "TypeName": "SubFoos",
+        "IsClass": true
       }
     ]
   },
-    {
-        "ElementName": "SubFoos",
-        "FromElements": [
-        {
-            "Name": "SubFoo",
-            "TypeName": "SubFoo[]"
-        }
-        ]
-    },
+  {
+    "ElementName": "SubFoos",
+    "FromElements": [
+      {
+        "Name": "SubFoo",
+        "TypeName": "SubFoo[]",
+        "IsClass": true
+      }
+    ]
+  },
   {
     "ElementName": "SubFoo",
     "FromElements": [
       {
         "Name": "Bar",
-        "TypeName": "string" 
+        "TypeName": "string"
       }
     ]
   }
